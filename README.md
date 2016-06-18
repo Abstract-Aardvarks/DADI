@@ -49,7 +49,7 @@ ___
 How to contribute to the project
 
 1. Clone repo into local machine
-    * **git clone http://github.com/sellnat77/TayBry.git**
+    * **git clone http://github.com/Abstract-Aardvarks/DADI.git**
 2. Build and run (master branch should be clean)
 3. checkout new branch
     *  **git checkout -b {branch-name}**
@@ -59,7 +59,7 @@ How to contribute to the project
           * ex: **git checkout -b adding_login-#12**
 4. Add your changes while git adding and git committing often
     * **git checkout...**
-    * Open unity and make your necessary code changes
+    * Open Android Studio and make your necessary code changes
     * **git add -A**
       * Adds all the changed work
     * **git commit -am "Descriptive message explaining what work was done"**
