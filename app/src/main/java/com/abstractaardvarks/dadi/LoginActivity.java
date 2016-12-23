@@ -1,9 +1,8 @@
 package com.abstractaardvarks.dadi;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Button;
+import android.support.v7.app.AppCompatActivity;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.auth.CognitoCredentialsProvider;
@@ -13,8 +12,6 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.Profile;
-import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -24,12 +21,10 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity {
 
     private Intent userAuthorized;
-
     private LoginButton loginButton;
     private CallbackManager callbackManager;
-    private ProfileTracker profileTracker;
-
     private CognitoCredentialsProvider credentialsProvider;
+    private CurrentUser cUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,21 +39,16 @@ public class LoginActivity extends AppCompatActivity {
 
     public void initializeGlobals()
     {
+        cUser = CurrentUser.getInstance();
         userAuthorized = new Intent(this, temp_activity.class);
         callbackManager = CallbackManager.Factory.create();
         credentialsProvider = new CognitoCachingCredentialsProvider(
                 this,
-                "us-east-1:9c0a69be-0516-49a1-9cf0-d4ec2f326e71",
+                (String)getText(R.string.cognito_id),
                 Regions.US_EAST_1);
-        profileTracker = new ProfileTracker() {
-            @Override
-            protected void onCurrentProfileChanged(
-                    Profile oldProfile,
-                    Profile currentProfile) {
-                // App code
-            }
-        };
+
         loginButton = (LoginButton) findViewById(R.id.facebook_login);
+
         // Callback registration
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -66,7 +56,9 @@ public class LoginActivity extends AppCompatActivity {
                 Map<String, String> logins = new HashMap<String, String>();
                 logins.put("graph.facebook.com", AccessToken.getCurrentAccessToken().getToken());
                 credentialsProvider.setLogins(logins);
-
+                cUser.credentials = credentialsProvider;
+                cUser.token = AccessToken.getCurrentAccessToken().getToken();
+                setCurrentUser();
                 startActivity(userAuthorized);
             }
 
@@ -86,5 +78,13 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void setCurrentUser()
+    {
+        cUser.credentials = credentialsProvider;
+        cUser.token = AccessToken.getCurrentAccessToken().getToken();
+        cUser.setfName("Russell");
+        cUser.setlName("Tan");
     }
 }
