@@ -38,4 +38,12 @@
         android:layout_marginRight="19dp"
         android:layout_marginEnd="19dp"
         android:id="@+id/userLName" />
+
+    <Button
+        android:text="Go To Lobby"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/LobbyButton" />
 </RelativeLayout>
