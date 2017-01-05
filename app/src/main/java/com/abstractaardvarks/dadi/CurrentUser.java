@@ -12,6 +12,7 @@ public class CurrentUser extends DADIUser {
 
     public String token;
     public CognitoCredentialsProvider credentials;
+    public com.facebook.Profile profile;
 
     protected CurrentUser(){}
 

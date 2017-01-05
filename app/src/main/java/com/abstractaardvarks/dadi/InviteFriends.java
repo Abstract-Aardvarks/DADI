@@ -23,6 +23,14 @@ public class InviteFriends extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_logout:
+                Intent logoutIntent = new Intent(getApplicationContext(), LoginActivity.class);
+
+                logoutIntent.putExtra("LOGOUT_OF_APPLICATION",true);
+
+                startActivity(logoutIntent);
+                return true;
+
             case R.id.action_settings:
                 // User chose the "Settings" item, show the app settings UI...
                 return true;

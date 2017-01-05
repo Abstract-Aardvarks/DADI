@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         Profile profile = Profile.getCurrentProfile();
         if(profile != null)
         {
-            setCurrentUser(profile.getFirstName(), profile.getLastName());
+            setCurrentUser(profile);
             startActivity(userAuthorized);
         }
 
@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
                 credentialsProvider.setLogins(logins);
                 cUser.credentials = credentialsProvider;
                 cUser.token = AccessToken.getCurrentAccessToken().getToken();
-                setCurrentUser();
+                setCurrentUser(profile);
                 startActivity(userAuthorized);
             }
 
@@ -95,20 +95,12 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    public void setCurrentUser()
+    public void setCurrentUser(Profile prof)
     {
         cUser.credentials = credentialsProvider;
         cUser.token = AccessToken.getCurrentAccessToken().getToken();
-        cUser.setfName("No Name");
-        cUser.setlName("Provided");
-    }
-
-    public void setCurrentUser(String fName, String lName)
-    {
-        cUser.credentials = credentialsProvider;
-        cUser.token = AccessToken.getCurrentAccessToken().getToken();
-        cUser.setfName(fName);
-        cUser.setlName(lName);
+        cUser.setfName(prof.getFirstName());
+        cUser.setlName(prof.getLastName());
     }
 }
 
