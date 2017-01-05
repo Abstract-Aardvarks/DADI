@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">DADI</string>
+    <string name="action_favorite">Favorite</string>
+    <string name="action_settings">Settings</string>
     <string name="facebook_app_id">1030386113675230</string>
     <string name="cognito_id">us-east-1:9c0a69be-0516-49a1-9cf0-d4ec2f326e71</string>
 </resources>
