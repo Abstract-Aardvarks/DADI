@@ -12,6 +12,8 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -39,6 +41,12 @@ public class LoginActivity extends AppCompatActivity {
 
     public void initializeGlobals()
     {
+        Intent incomingIntent = getIntent();
+        if(incomingIntent.getExtras() != null) {
+            if (incomingIntent.getExtras().getBoolean("LOGOUT_OF_APPLICATION")) {
+                LoginManager.getInstance().logOut();
+            }
+        }
         cUser = CurrentUser.getInstance();
         userAuthorized = new Intent(this, temp_activity.class);
         callbackManager = CallbackManager.Factory.create();
@@ -48,6 +56,12 @@ public class LoginActivity extends AppCompatActivity {
                 Regions.US_EAST_1);
 
         loginButton = (LoginButton) findViewById(R.id.facebook_login);
+        Profile profile = Profile.getCurrentProfile();
+        if(profile != null)
+        {
+            setCurrentUser(profile.getFirstName(), profile.getLastName());
+            startActivity(userAuthorized);
+        }
 
         // Callback registration
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -55,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
                 Map<String, String> logins = new HashMap<String, String>();
                 logins.put("graph.facebook.com", AccessToken.getCurrentAccessToken().getToken());
+                Profile profile = Profile.getCurrentProfile();
                 credentialsProvider.setLogins(logins);
                 cUser.credentials = credentialsProvider;
                 cUser.token = AccessToken.getCurrentAccessToken().getToken();
@@ -84,7 +99,16 @@ public class LoginActivity extends AppCompatActivity {
     {
         cUser.credentials = credentialsProvider;
         cUser.token = AccessToken.getCurrentAccessToken().getToken();
-        cUser.setfName("Russell");
-        cUser.setlName("Tan");
+        cUser.setfName("No Name");
+        cUser.setlName("Provided");
+    }
+
+    public void setCurrentUser(String fName, String lName)
+    {
+        cUser.credentials = credentialsProvider;
+        cUser.token = AccessToken.getCurrentAccessToken().getToken();
+        cUser.setfName(fName);
+        cUser.setlName(lName);
     }
 }
+
