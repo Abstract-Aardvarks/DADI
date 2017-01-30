@@ -8,14 +8,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 public class LobbyActivity extends AppCompatActivity {
 
     Button NewEventButton;
+    String[] mobileArray = {"one", "two", "Tie my shoe"};
+    ArrayList<Event> recentEvents = new ArrayList<Event>();
+    EventAdapter evAdapter;
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         MenuItem item = menu.findItem(R.id.action_home);
         item.setVisible(false);
@@ -28,7 +33,7 @@ public class LobbyActivity extends AppCompatActivity {
             case R.id.action_logout:
                 Intent logoutIntent = new Intent(getApplicationContext(), LoginActivity.class);
 
-                logoutIntent.putExtra("LOGOUT_OF_APPLICATION",true);
+                logoutIntent.putExtra("LOGOUT_OF_APPLICATION", true);
 
                 startActivity(logoutIntent);
                 return true;
@@ -42,7 +47,7 @@ public class LobbyActivity extends AppCompatActivity {
                 // as a favorite...
                 return true;
             case R.id.action_home:
-                startActivity(new Intent(getApplicationContext(),LobbyActivity.class));
+                startActivity(new Intent(getApplicationContext(), LobbyActivity.class));
                 return true;
 
             default:
@@ -56,15 +61,37 @@ public class LobbyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
+
+
         Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolBar);
+
+        //ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_events, mobileArray);
+        Event testEvent = new Event();
+        testEvent.setDateCreated("01022015");
+        testEvent.setTopic("Party at TGI Fridays!");
+        testEvent.setCategory("Food");
+        testEvent.setLatitude(10);
+        testEvent.setLongitude(10);
+        recentEvents.add(testEvent);
+        recentEvents.add(testEvent);
+        recentEvents.add(testEvent);
+        recentEvents.add(testEvent);
+        recentEvents.add(testEvent);
+        recentEvents.add(testEvent);
+        recentEvents.add(testEvent);
+
+        evAdapter = new EventAdapter(getApplicationContext(), EventModel.events);
+
+        ListView listView = (ListView) findViewById(R.id.RecentEventList);
+        listView.setAdapter(evAdapter);
 
         initVals();
     }
 
-    public void initVals()
-    {
+    public void initVals() {
         NewEventButton = (Button) findViewById(R.id.NewEventButton);
+
 
         NewEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
